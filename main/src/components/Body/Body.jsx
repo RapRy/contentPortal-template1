@@ -1,16 +1,11 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 
 import Categories from './Categories/Categories'
 
 const Body = ({data}) => {
-
-    useEffect(() => {
-        console.log(data)
-    }, [data])
-
     return (
         <div>
-            <Categories subCategories={data} />
+            <Categories subCategories={data.subCategories} />
         </div>
     )
 }
