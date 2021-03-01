@@ -17,7 +17,9 @@ function App() {
       headers: {'content-type':'application/x-www-form-urlencoded'},
       data:dataForm
     })
-    .then(res => setData(res.data))
+    .then(res => {
+      setData(res.data)
+    })
   }, [curCat])
 
   return (

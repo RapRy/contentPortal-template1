@@ -1,4 +1,8 @@
 <?php
+    header('Access-Control-Allow-Origin: *');
+?>
+
+<?php
     $mysqli = new mysqli("qnetdbreplica.cmftoqajaxu1.ap-southeast-1.rds.amazonaws.com", "qnet2018", "dOgV$&8S", "cms");
 
     if(mysqli_connect_errno()){
@@ -39,7 +43,8 @@
                     "catId" => $catId,
                     "subCatId" => $subCatId,
                     "subCategory" => $subCategory,
-                    "category" => $category
+                    "category" => $category,
+                    "isShow" => true
                 ];
                 array_push($this->data['subCategories'], $dataAssoc);
                 array_push($this->data['contents'], $this->getContents($mysqli, $catId, $subCatId, $category, $subCatId));
