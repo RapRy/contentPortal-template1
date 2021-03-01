@@ -47,7 +47,7 @@
                     "isShow" => true
                 ];
                 array_push($this->data['subCategories'], $dataAssoc);
-                array_push($this->data['contents'], $this->getContents($mysqli, $catId, $subCatId, $category, $subCatId));
+                array_push($this->data['contents'], $this->getContents($mysqli, $catId, $subCatId, $category, $subCategory));
             }
 
             $stmt->close();

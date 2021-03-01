@@ -1,8 +1,7 @@
 import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
-const Categories = ({subCategories}) => {
-    const [selected, setSelected] = useState(0);
+const Categories = ({subCategories, setFiltered, filtered}) => {
     const [data, setData] = useState([]);
 
     const CategoriesWrap = styled.ul`
@@ -61,13 +60,49 @@ const Categories = ({subCategories}) => {
         font-weight:500;
     `
 
-    const toggleCheck = (val) => {
-        console.log(!val)
+    const toggleCheck = (val, ind) => {
+
+        if(data[ind].subCategory === "All"){
+            let allData = [];
+
+            data.forEach((dat) => {
+                dat.isShow = !val
+                allData.push(dat);
+            })
+
+            setData(allData);
+
+            if(val === true){
+                let idCont = []
+
+                data.forEach((dat) => idCont.push(dat.subCatId))
+
+                setFiltered(idCont)
+            }else if(val === false){
+                setFiltered([])
+            }
+        }else{
+            data[ind].isShow = !val;
+
+            let updatedData = data[ind];
+
+            let filteredData = data.filter((dat, i) => dat.subCatId != data[ind].subCatId);
+
+            filteredData.splice(ind, 0, updatedData)
+
+            setData(filteredData);
+
+            if(val === true){
+                setFiltered([...filtered, data[ind].subCatId]);
+            }else if(val === false){
+                let filterFiltered = filtered.filter((fil) => fil != data[ind].subCatId);
+                setFiltered(filterFiltered)
+            }
+        }
     }
 
     useEffect(() => {
         if(subCategories != undefined){
-            setSelected(subCategories[0].subCatId);
             setData([{catId:subCategories[0].catId, category:subCategories[0].category, isShow: true, subCatId: null, subCategory: "All"}, ...subCategories]);
         }
     }, [subCategories])
@@ -76,11 +111,11 @@ const Categories = ({subCategories}) => {
         <div>
             <CategoriesWrap>
                 {
-                   data != undefined && data.map((subCat) => 
+                   data != undefined && data.map((subCat, i) => 
                         ( <li key={subCat.subCatId}>
                             <Checkbox>
                                 <CheckIcon>{subCat.isShow === true ? <span>✔</span> : ""}</CheckIcon>
-                                <input type="checkbox" id={subCat.subCategory} onClick={() => toggleCheck(subCat.isShow)} checked={subCat.isShow} onChange={e => {}} />
+                                <input type="checkbox" id={subCat.subCategory} checked={subCat.isShow} onChange={e => {toggleCheck(subCat.isShow, i)}} />
                             </Checkbox>
                             <Label htmlFor={subCat.subCategory}>{subCat.subCategory}</Label>
                         </li> )
