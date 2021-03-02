@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
-const Categories = ({subCategories, setFiltered, filtered}) => {
+const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
     const [data, setData] = useState([]);
+    
 
     const CategoriesWrap = styled.ul`
         max-width:900px;
@@ -71,11 +72,12 @@ const Categories = ({subCategories, setFiltered, filtered}) => {
             })
 
             setData(allData);
+            setCurrent(data[ind]);
 
             if(val === true){
                 let idCont = []
 
-                data.forEach((dat) => idCont.push(dat.subCatId))
+                data.forEach((dat) => dat.subCatId != null && idCont.push(dat.subCatId))
 
                 setFiltered(idCont)
             }else if(val === false){
@@ -90,21 +92,32 @@ const Categories = ({subCategories, setFiltered, filtered}) => {
 
             filteredData.splice(ind, 0, updatedData)
 
-            setData(filteredData);
+            setCurrent(data[ind]);
 
             if(val === true){
                 setFiltered([...filtered, data[ind].subCatId]);
+                data[0].isShow = !val;
+                
+                filteredData.splice(0, 1, data[0])
+
+                setData(filteredData);
             }else if(val === false){
                 let filterFiltered = filtered.filter((fil) => fil != data[ind].subCatId);
                 setFiltered(filterFiltered)
+
+                if(filtered.length === 1){
+                    data[0].isShow = !val;
+                    filteredData.splice(0, 1, data[0])
+                }
+
+                setData(filteredData);
+                
             }
         }
     }
 
     useEffect(() => {
-        if(subCategories != undefined){
-            setData([{catId:subCategories[0].catId, category:subCategories[0].category, isShow: true, subCatId: null, subCategory: "All"}, ...subCategories]);
-        }
+        subCategories != undefined && setData([{catId:subCategories[0].catId, category:subCategories[0].category, isShow: true, subCatId: null, subCategory: "All"}, ...subCategories])
     }, [subCategories])
 
     return (

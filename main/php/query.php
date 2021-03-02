@@ -37,6 +37,7 @@
 
             $stmt->bind_result($catId, $category, $subCatId, $subCategory);
 
+            $contentArr = [];
 
             while($stmt->fetch()){
                 $dataAssoc = [
@@ -48,7 +49,10 @@
                 ];
                 array_push($this->data['subCategories'], $dataAssoc);
                 array_push($this->data['contents'], $this->getContents($mysqli, $catId, $subCatId, $category, $subCategory));
+                // array_merge($contentArr, $this->getContents($mysqli, $catId, $subCatId, $category, $subCategory));
             }
+
+            // array_push($this->data['contents'], $contentArr);
 
             $stmt->close();
         }
