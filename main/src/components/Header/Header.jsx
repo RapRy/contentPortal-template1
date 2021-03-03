@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import SideNav from './SideNav'
 
-const Header = () => {
+const Header = ({setCurCat}) => {
     const Header = styled.header`
         min-width:375px;
         background:#7f1616;
@@ -75,8 +75,8 @@ const Header = () => {
                 <div className="menuWrapper">
                     <DesktopMenu>
                         <ul>
-                            <MenuLink><a href="#">HTML5</a></MenuLink>
-                            <MenuLink><a href="#">Android</a></MenuLink>
+                            <MenuLink><a href="#" onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</a></MenuLink>
+                            <MenuLink><a href="#" onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</a></MenuLink>
                         </ul>
                     </DesktopMenu>
                     <MenuBurger>

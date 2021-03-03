@@ -9,6 +9,7 @@ const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
         max-width:900px;
         margin:0 auto;
         padding:0 20px;
+        margin-bottom:20px;
 
         li{
             display:inline-block;

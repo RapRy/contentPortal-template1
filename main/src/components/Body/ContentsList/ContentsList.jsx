@@ -2,13 +2,20 @@ import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 import Content from './Content'
+import Preview from './Preview'
 
 const ContentsList = ({contents, filtered, current}) => {
     const [data, setData] = useState([]);
+    const [selected, setSelected] = useState([]);
 
-    // const updateContentList = () => {
-
-    // }
+    const ContentListContainer = styled.div`
+        display:grid;
+        grid-template-columns:repeat(4, 1fr);
+        grid-gap:15px;
+        max-width:900px;
+        margin:0 auto;
+        padding:0 20px 20px;
+    `
 
     useEffect(() => {        
 
@@ -47,9 +54,12 @@ const ContentsList = ({contents, filtered, current}) => {
     }, [contents])
 
     return (
-        <div>
-            {data.map((cont) => <Content key={cont.id} data={cont} />)}
-        </div>
+        <>
+            {selected.length > 0 && <Preview data={selected} />}
+            <ContentListContainer>
+                {data.map((cont) => <Content key={cont.id} data={cont} setSelected={setSelected} />)}
+            </ContentListContainer>
+        </>
     )
 }
 

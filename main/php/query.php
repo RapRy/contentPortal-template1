@@ -16,6 +16,7 @@
 
         public $catCondition;
         public $cat;
+        public $contentId;
         public $data = ["subCategories" => [], "contents" => [], "currentContent" => []];
 
         function getCategories($mysqli){
@@ -85,13 +86,43 @@
 
             return $data;
         }
+
+        function getContentDetails($mysqli){
+            $this->contentId = filter_var($_POST['contentId'], FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $stmt = $mysqli->prepare("SELECT id, title, description, file_name, original_file_name FROM cms.contents WHERE id=?");
+            $stmt->bind_param("i", $this->contentId);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($id, $title, $description, $fileName, $origFileName);
+
+            $details = [];
+
+            while($stmt->fetch()){
+                $dataAssoc = [
+                    "id" => $id,
+                    "title" => $title,
+                    "description" => $description,
+                    "fileName" => $fileName,
+                    "origFileName" => $origFileName,
+                    "subCategory" => $_POST['subCat']
+                ];
+
+                array_push($details, $dataAssoc);
+            }
+
+            array_push($this->data['currentContent'], $details);
+        }
     }
 
+    $query = new Query;
 
-    if($_POST['cat']){
-        $query = new Query;
+    if(isset($_POST['cat'])){
         $query->getCategories($mysqli);
         echo json_encode($query->data);
+    }else if(isset($_POST['contentId'])){
+        $query->getContentDetails($mysqli);
+        echo json_encode($query->data['currentContent']);
     }
 
 ?>
