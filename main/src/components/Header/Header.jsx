@@ -1,7 +1,11 @@
+import {useState} from 'react'
+
 import styled from 'styled-components'
 import SideNav from './SideNav'
 
-const Header = ({setCurCat}) => {
+const Header = ({setCurCat, curCat}) => {
+    const [showSideNav, setShowSideNav] = useState(false)
+
     const Header = styled.header`
         min-width:375px;
         background:#7f1616;
@@ -29,7 +33,11 @@ const Header = ({setCurCat}) => {
     `
 
     const DesktopMenu = styled.div`
-        
+        display:none;
+
+        @media all and (mIN-width:450px){
+            display:${({showSideNav}) => showSideNav === true ? "none" : "block"}   
+        }
     `
 
     const MenuLink = styled.li`
@@ -44,8 +52,11 @@ const Header = ({setCurCat}) => {
             color:#fff;
             font-size:1rem;
             font-weight:500;
-            color:#fff;
             text-decoration:none;
+
+            &.activeCat{
+                color:#ffea00;
+            }
         }
     `
 
@@ -53,18 +64,24 @@ const Header = ({setCurCat}) => {
         width:48px;
         height:40px;
         border-radius:5px;
-        display:none;
+        display:block;
+        position:relative;
+        z-index:4;
+
+        @media all and (mIN-width:450px){
+            display:${({showSideNav}) => showSideNav === true ? "block" : "none"};
+        }
 
         span{
             display:block;
-            background:#000;
+            background:#fff;
             position:relative;
-            border-radius:2px;
+            border-radius:1px;
             width:36px;
             height:5px;
             right:0;
             top:5px;
-            margin-bottom:5px;
+            margin-bottom:7px;
         }
     `
 
@@ -73,20 +90,20 @@ const Header = ({setCurCat}) => {
             <HeaderWrapper>
                 <h3>Gamezone</h3>
                 <div className="menuWrapper">
-                    <DesktopMenu>
+                    <DesktopMenu showSideNav={showSideNav}>
                         <ul>
-                            <MenuLink><a href="#" onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</a></MenuLink>
-                            <MenuLink><a href="#" onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</a></MenuLink>
+                            <MenuLink><a className={curCat === "HTML5" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</a></MenuLink>
+                            <MenuLink><a className={curCat === "Games-apk" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</a></MenuLink>
                         </ul>
                     </DesktopMenu>
-                    <MenuBurger>
+                    <MenuBurger onClick={() => setShowSideNav(!showSideNav)} showSideNav={showSideNav}>
                         <span></span>
                         <span></span>
                         <span></span>
                     </MenuBurger>
                 </div>
             </HeaderWrapper>
-            <SideNav />
+            {showSideNav === true && <SideNav showSideNav={showSideNav} setCurCat={setCurCat} curCat={curCat} />}
         </Header>
     )
 }

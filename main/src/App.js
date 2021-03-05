@@ -24,7 +24,7 @@ function App() {
 
   return (
     <>
-      <Header setCurCat={setCurCat} />
+      <Header setCurCat={setCurCat} curCat={curCat} />
       <Body data={data} />
     </>
   );

@@ -20,6 +20,7 @@ const ContentsList = ({contents, filtered, current}) => {
     useEffect(() => {        
 
         setData(contents)
+        setSelected([]);
 
         console.log("content lists")
 
@@ -55,7 +56,7 @@ const ContentsList = ({contents, filtered, current}) => {
 
     return (
         <>
-            {selected.length > 0 && <Preview data={selected} />}
+            {selected.length > 0 && <Preview data={selected} category={data[0].category} setSelected={setSelected}/>}
             <ContentListContainer>
                 {data.map((cont) => <Content key={cont.id} data={cont} setSelected={setSelected} />)}
             </ContentListContainer>

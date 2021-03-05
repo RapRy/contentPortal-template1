@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const SideNav = () => {
+const SideNav = ({ setCurCat, showSideNav, curCat }) => {
     const SideNavWrapper = styled.div`
         position:absolute;
         width:200px;
@@ -10,7 +10,7 @@ const SideNav = () => {
         background:#292727;
         z-index:3;
         padding:95px 0 0 15px;
-        display:none;
+        display:${({showSideNav}) => showSideNav === true ? "block" : "none"};
     `
 
     const MenuLink = styled.li`
@@ -24,17 +24,20 @@ const SideNav = () => {
             color:#fff;
             font-size:1rem;
             font-weight:500;
-            color:#fff;
             text-decoration:none;
+
+            &.activeCat{
+                color:#ffea00;
+            }
         }
     `    
 
     return (
-        <SideNavWrapper>
+        <SideNavWrapper showSideNav={showSideNav}>
             <div className="mobileMenu">
                 <ul>
-                    <MenuLink><a href="#">HTML5</a></MenuLink>
-                    <MenuLink><a href="#">Android</a></MenuLink>
+                    <MenuLink><a className={curCat === "HTML5" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</a></MenuLink>
+                    <MenuLink><a className={curCat === "Games-apk" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</a></MenuLink>
                 </ul>
             </div>
         </SideNavWrapper>

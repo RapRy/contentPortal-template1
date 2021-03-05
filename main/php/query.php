@@ -108,10 +108,10 @@
                     "subCategory" => $_POST['subCat']
                 ];
 
-                array_push($details, $dataAssoc);
+                $details = $dataAssoc;
             }
 
-            array_push($this->data['currentContent'], $details);
+            $this->data['currentContent'] = $details;
         }
     }
 

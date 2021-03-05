@@ -118,7 +118,13 @@ const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
     }
 
     useEffect(() => {
-        subCategories != undefined && setData([{catId:subCategories[0].catId, category:subCategories[0].category, isShow: true, subCatId: null, subCategory: "All"}, ...subCategories])
+        if(subCategories != undefined){
+            if(subCategories.length > 1){
+                setData([{catId:subCategories[0].catId, category:subCategories[0].category, isShow: true, subCatId: null, subCategory: "All"}, ...subCategories])
+            }else{
+                setData([...subCategories])
+            }
+        }
     }, [subCategories])
 
     return (
@@ -131,7 +137,7 @@ const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
                                 <CheckIcon>{subCat.isShow === true ? <span>✔</span> : ""}</CheckIcon>
                                 <input type="checkbox" id={subCat.subCategory} checked={subCat.isShow} onChange={e => {toggleCheck(subCat.isShow, i)}} />
                             </Checkbox>
-                            <Label htmlFor={subCat.subCategory}>{subCat.subCategory}</Label>
+                            <Label htmlFor={subCat.subCategory}>{subCat.subCategory.replace("-", " ")}</Label>
                         </li> )
                     )
                 }
