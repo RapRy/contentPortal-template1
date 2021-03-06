@@ -41,7 +41,7 @@ const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
         display:block;
         width:15px;
         height:15px;
-        border:2px solid #000;
+        border:2px solid ${({isShow}) => isShow === true ? "#7f1616" : "#ccc"};
         border-radius:2px;
         position:absolute;
         top:3px;
@@ -53,6 +53,7 @@ const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
             top:-3px;
             left:0px;
             font-weight:700;
+            color:#7f1616;
         }
     `
 
@@ -60,6 +61,7 @@ const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
         cursor:pointer;
         font-size:.9rem;
         font-weight:500;
+        color: ${({isShow}) => isShow === true ? "#7f1616" : "#ccc"}
     `
 
     const toggleCheck = (val, ind) => {
@@ -134,10 +136,10 @@ const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
                    data != undefined && data.map((subCat, i) => 
                         ( <li key={subCat.subCatId}>
                             <Checkbox>
-                                <CheckIcon>{subCat.isShow === true ? <span>✔</span> : ""}</CheckIcon>
+                                <CheckIcon isShow={subCat.isShow}>{subCat.isShow === true ? <span>✔</span> : ""}</CheckIcon>
                                 <input type="checkbox" id={subCat.subCategory} checked={subCat.isShow} onChange={e => {toggleCheck(subCat.isShow, i)}} />
                             </Checkbox>
-                            <Label htmlFor={subCat.subCategory}>{subCat.subCategory.replace("-", " ")}</Label>
+                            <Label htmlFor={subCat.subCategory} isShow={subCat.isShow}>{subCat.subCategory.replace("-", " ")}</Label>
                         </li> )
                     )
                 }

@@ -16,8 +16,6 @@ const Body = ({data}) => {
             })
             
             setContents(conCatData)
-
-            console.log("body")
         }
     }, [filtered, data])
 

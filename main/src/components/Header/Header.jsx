@@ -2,9 +2,43 @@ import {useState} from 'react'
 
 import styled from 'styled-components'
 import SideNav from './SideNav'
+import { useTransition, useSpring, animated } from 'react-spring'
 
 const Header = ({setCurCat, curCat}) => {
     const [showSideNav, setShowSideNav] = useState(false)
+
+    const sidenavTransition = useTransition(showSideNav, null, {
+        from:{right:"-999px"},
+        enter:{right:"0px"},
+        leave:{right:"-999px"}
+    })
+
+    const menuBurgerTop = useSpring({
+        to:{top:showSideNav ? "17px" : "5px", transform: showSideNav ? "rotate(45deg)" : "rotate(0deg)"},
+        from:{top:"5px", transform:"rotate(0deg)"},
+    })
+
+    const menuBurgerBottom = useSpring({
+        to:{top:showSideNav ? "-8px" : "5px", transform: showSideNav ? "rotate(-45deg)" : "rotate(0deg)"},
+        from:{top:"5px", transform:"rotate(0deg)"},
+    })
+
+    const menuBurgerTransitionMiddle = useSpring({
+        to:{
+            right:showSideNav ? "-20px" : "0px",
+            opacity:showSideNav ? 0 : 1
+        },
+        from:{
+            right:"0px",
+            opacity:1
+        }
+    })
+
+    // const test = useTransition(showSideNav, null, {
+    //     from: {width: "36px"},
+    //     enter: {width: "20px"},
+    //     leave: {width:"36px"}
+    // })
 
     const Header = styled.header`
         min-width:375px;
@@ -35,7 +69,7 @@ const Header = ({setCurCat, curCat}) => {
     const DesktopMenu = styled.div`
         display:none;
 
-        @media all and (mIN-width:450px){
+        @media all and (min-width:450px){
             display:${({showSideNav}) => showSideNav === true ? "none" : "block"}   
         }
     `
@@ -53,6 +87,7 @@ const Header = ({setCurCat, curCat}) => {
             font-size:1rem;
             font-weight:500;
             text-decoration:none;
+            cursor:pointer;
 
             &.activeCat{
                 color:#ffea00;
@@ -67,8 +102,9 @@ const Header = ({setCurCat, curCat}) => {
         display:block;
         position:relative;
         z-index:4;
+        cursor:pointer;
 
-        @media all and (mIN-width:450px){
+        @media all and (min-width:450px){
             display:${({showSideNav}) => showSideNav === true ? "block" : "none"};
         }
 
@@ -79,11 +115,44 @@ const Header = ({setCurCat, curCat}) => {
             border-radius:1px;
             width:36px;
             height:5px;
-            right:0;
+            right:0px;
             top:5px;
             margin-bottom:7px;
+            transform-origin:center;
         }
     `
+
+    const SideNavWrapper = styled(animated.div)`
+        position:absolute;
+        width:200px;
+        height:100%;
+        top:0;
+        right:"-999px";
+        background:#292727;
+        z-index:3;
+        padding:95px 0 0 15px;
+        display:block;
+    `
+
+    const MenuLinkSub = styled.li`
+        margin-bottom:30px;
+
+        &:last-child{
+            margin-bottom:0;
+        }
+
+        a{
+            color:#fff;
+            font-size:1rem;
+            font-weight:500;
+            text-decoration:none;
+            cursor:pointer;
+
+            &.activeCat{
+                color:#ffea00;
+            }
+        }
+    `    
 
     return (
         <Header>
@@ -97,13 +166,24 @@ const Header = ({setCurCat, curCat}) => {
                         </ul>
                     </DesktopMenu>
                     <MenuBurger onClick={() => setShowSideNav(!showSideNav)} showSideNav={showSideNav}>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        {/* {test.map(({item, key, props}) => item && <animated.span style={props} key={key}></animated.span>)} */}
+                        <animated.span style={menuBurgerTop}></animated.span>
+                        <animated.span style={menuBurgerTransitionMiddle}></animated.span>
+                        <animated.span style={menuBurgerBottom}></animated.span>
                     </MenuBurger>
                 </div>
             </HeaderWrapper>
-            {showSideNav === true && <SideNav showSideNav={showSideNav} setCurCat={setCurCat} curCat={curCat} />}
+            {sidenavTransition.map(({item, key, props}) => 
+                item &&
+                    <SideNavWrapper showSideNav={showSideNav} style={props} key={key}>
+                        <div className="mobileMenu">
+                            <ul>
+                                <MenuLinkSub><a className={curCat === "HTML5" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</a></MenuLinkSub>
+                                <MenuLinkSub><a className={curCat === "Games-apk" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</a></MenuLinkSub>
+                            </ul>
+                        </div>
+                    </SideNavWrapper>
+            )}
         </Header>
     )
 }

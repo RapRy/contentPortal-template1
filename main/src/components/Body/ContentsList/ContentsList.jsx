@@ -22,8 +22,6 @@ const ContentsList = ({contents, filtered, current}) => {
         setData(contents)
         setSelected([]);
 
-        console.log("content lists")
-
         if(contents.length > 0){
             
             if(filtered.length != 0){
