@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faFileDownload, faGamepad } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom'
 
 
-const Preview = ({data, category, setSelected}) => {
+const Preview = ({data, category, setSelected, catpath}) => {
+
     const PreviewCont = styled.div`
         padding:0 20px;
         margin-bottom:30px;
@@ -72,7 +74,9 @@ const Preview = ({data, category, setSelected}) => {
                         <Thumbnail src={`https://s3-ap-southeast-1.amazonaws.com/qcnt/${category === "Games-apk" ? data[0].fileName.substring(0, data[0].fileName.length - 3) : "content/"+data[0].origFileName+"."}png`} />
                     </div>
                     <div>
-                        <CloseBtn onClick={(e) => setSelected([])} ><FontAwesomeIcon icon={faTimes} size="2x" className="closeIcon"/></CloseBtn>
+                        <Link to={`/${catpath}`}>
+                            <CloseBtn onClick={(e) => setSelected([])} ><FontAwesomeIcon icon={faTimes} size="2x" className="closeIcon"/></CloseBtn>
+                        </Link>
                         <p>{data[0].title}</p>
                         <DownloadLink href={category === "Games-apk" ? `https://s3-ap-southeast-1.amazonaws.com/qcnt/${data[0].fileName}` : data[0].fileName}>
                             <FontAwesomeIcon icon={category === "Games-apk" ? faFileDownload : faGamepad} size="1x" className="dlIcon" />

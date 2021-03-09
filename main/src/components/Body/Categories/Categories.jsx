@@ -4,7 +4,6 @@ import styled from 'styled-components'
 const Categories = ({subCategories, setFiltered, filtered, setCurrent}) => {
     const [data, setData] = useState([]);
     
-
     const CategoriesWrap = styled.ul`
         max-width:900px;
         margin:0 auto;

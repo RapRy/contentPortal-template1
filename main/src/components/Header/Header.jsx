@@ -3,6 +3,7 @@ import {useState} from 'react'
 import styled from 'styled-components'
 import SideNav from './SideNav'
 import { useTransition, useSpring, animated } from 'react-spring'
+import { Link } from 'react-router-dom'
 
 const Header = ({setCurCat, curCat}) => {
     const [showSideNav, setShowSideNav] = useState(false)
@@ -33,12 +34,6 @@ const Header = ({setCurCat, curCat}) => {
             opacity:1
         }
     })
-
-    // const test = useTransition(showSideNav, null, {
-    //     from: {width: "36px"},
-    //     enter: {width: "20px"},
-    //     leave: {width:"36px"}
-    // })
 
     const Header = styled.header`
         min-width:375px;
@@ -161,8 +156,8 @@ const Header = ({setCurCat, curCat}) => {
                 <div className="menuWrapper">
                     <DesktopMenu showSideNav={showSideNav}>
                         <ul>
-                            <MenuLink><a className={curCat === "HTML5" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</a></MenuLink>
-                            <MenuLink><a className={curCat === "Games-apk" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</a></MenuLink>
+                            <MenuLink><Link to="/HTML5" className={curCat === "HTML5" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</Link></MenuLink>
+                            <MenuLink><Link to="/APK" className={curCat === "Games-apk" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</Link></MenuLink>
                         </ul>
                     </DesktopMenu>
                     <MenuBurger onClick={() => setShowSideNav(!showSideNav)} showSideNav={showSideNav}>
@@ -178,8 +173,8 @@ const Header = ({setCurCat, curCat}) => {
                     <SideNavWrapper showSideNav={showSideNav} style={props} key={key}>
                         <div className="mobileMenu">
                             <ul>
-                                <MenuLinkSub><a className={curCat === "HTML5" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</a></MenuLinkSub>
-                                <MenuLinkSub><a className={curCat === "Games-apk" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</a></MenuLinkSub>
+                                <MenuLinkSub><Link to="/HTML5" className={curCat === "HTML5" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="HTML5">HTML5</Link></MenuLinkSub>
+                                <MenuLinkSub><Link to="/APK" className={curCat === "Games-apk" && "activeCat"} onClick={(e) => setCurCat(e.target.dataset.cat)} data-cat="Games-apk">Android</Link></MenuLinkSub>
                             </ul>
                         </div>
                     </SideNavWrapper>

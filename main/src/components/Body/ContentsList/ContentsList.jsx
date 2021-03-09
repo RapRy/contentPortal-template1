@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import styled from 'styled-components'
+import { Route, useParams } from 'react-router-dom'
 
 import Content from './Content'
 import Preview from './Preview'
@@ -7,6 +8,7 @@ import Preview from './Preview'
 const ContentsList = ({contents, filtered, current}) => {
     const [data, setData] = useState([]);
     const [selected, setSelected] = useState([]);
+    const {cat} = useParams()
 
     const ContentListContainer = styled.div`
         display:grid;
@@ -54,9 +56,14 @@ const ContentsList = ({contents, filtered, current}) => {
 
     return (
         <>
-            {selected.length > 0 && <Preview data={selected} category={data[0].category} setSelected={setSelected}/>}
+            {
+                selected.length > 0 &&
+                    <Route path={`/${cat}/:subCat/:contentId`}>
+                        <Preview data={selected} category={data[0].category} setSelected={setSelected} catpath={cat}/>
+                    </Route>
+            }
             <ContentListContainer>
-                {data.map((cont) => <Content key={cont.id} data={cont} setSelected={setSelected} />)}
+                {data.map((cont) => <Content key={cont.id} data={cont} setSelected={setSelected} current={current} />)}
             </ContentListContainer>
         </>
     )
