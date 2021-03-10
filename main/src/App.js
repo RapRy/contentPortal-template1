@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header/Header';
 import Body from './components/Body/Body'
 import axios from 'axios'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 function App() {
   const [data, setData] = useState([]);
@@ -26,9 +26,14 @@ function App() {
   return (
     <Router>
       <Header setCurCat={setCurCat} curCat={curCat} />
-      <Route path="/:cat">
-        <Body data={data} />
-      </Route>
+      <Switch>
+        <Route path="/">
+          <Body data={data} />
+        </Route>
+        <Route path="/:cat">
+          <Body data={data} />
+        </Route>
+      </Switch>
     </Router>
   );
 }

@@ -4,7 +4,7 @@ import { faTimes, faFileDownload, faGamepad } from '@fortawesome/free-solid-svg-
 import { Link } from 'react-router-dom'
 
 
-const Preview = ({data, category, setSelected, catpath}) => {
+const Preview = ({data, category, setSelected}) => {
 
     const PreviewCont = styled.div`
         padding:0 20px;
@@ -74,7 +74,7 @@ const Preview = ({data, category, setSelected, catpath}) => {
                         <Thumbnail src={`https://s3-ap-southeast-1.amazonaws.com/qcnt/${category === "Games-apk" ? data[0].fileName.substring(0, data[0].fileName.length - 3) : "content/"+data[0].origFileName+"."}png`} />
                     </div>
                     <div>
-                        <Link to={`/${catpath}`}>
+                        <Link to={`/${category === "Games-apk" ? "APK" : "HTML"}`}>
                             <CloseBtn onClick={(e) => setSelected([])} ><FontAwesomeIcon icon={faTimes} size="2x" className="closeIcon"/></CloseBtn>
                         </Link>
                         <p>{data[0].title}</p>
