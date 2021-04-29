@@ -1,40 +1,23 @@
 import { useState, useEffect } from 'react';
 import Header from './components/Header/Header';
-import Body from './components/Body/Body'
+// import Body from './components/Body/Body'
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { fetchFirstLoad } from './actions/categories'
 
 function App() {
-  const [data, setData] = useState([]);
-  const [curCat, setCurCat] = useState("Games-apk")
+  const dispatch = useDispatch()
+  // const { activeCat, activeSubcat, categories, contents } = useSelector(state => state.dataReducer)
 
   useEffect(() => {
-    const dataForm = new FormData;
-    dataForm.append('cat', curCat)
-
-    axios({
-      
-      method:'post',
-      url:'http://localhost/_ry/contentPortal-template1/contentportal-template1/main/php/query.php',
-      headers: {'content-type':'application/x-www-form-urlencoded'},
-      data:dataForm
-    })
-    .then(res => {
-      setData(res.data)
-    })
-  }, [curCat])
+    dispatch(fetchFirstLoad())
+  }, [])
 
   return (
     <Router>
-      <Header setCurCat={setCurCat} curCat={curCat} />
-      <Switch>
-        <Route path="/">
-          <Body data={data} />
-        </Route>
-        <Route path="/:cat">
-          <Body data={data} />
-        </Route>
-      </Switch>
+      <Header />
     </Router>
   );
 }
