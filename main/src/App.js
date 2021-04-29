@@ -14,7 +14,7 @@ function App() {
 
     axios({
       method:'post',
-      url:'http://localhost/_ry/contentportal-template1/main/php/query.php',
+      url:'http://localhost/_ry/contentPortal-template1/contentportal-template1/main/php/query.php',
       headers: {'content-type':'application/x-www-form-urlencoded'},
       data:dataForm
     })
