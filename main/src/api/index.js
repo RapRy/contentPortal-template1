@@ -2,4 +2,4 @@ import axios from 'axios'
 
 const url = "http://localhost:5000"
 
-export const fetchFirstLoad = () => axios.get(`${url}/categories/Games`)
+export const fetchCategories = (category) => axios.get(`${url}/categories/${category}`)

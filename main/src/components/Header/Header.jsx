@@ -1,15 +1,22 @@
 import {useState, useEffect} from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
 
 import styled from 'styled-components'
 // import SideNav from './SideNav'
 // import { useTransition, useSpring, animated } from 'react-spring'
-import { Link } from 'react-router-dom'
+import { fetchCategories } from '../../actions/categories'
+
 
 const Header = () => {
     const [data, setData] = useState({})
     const { activeCat, categories, activeSubcat } = useSelector(state => state.dataReducer)
+    const dispatch = useDispatch()
+
+    const getCategories = (e, category) => {
+        e.preventDefault()
+        dispatch(fetchCategories(category))
+    }
 
     useEffect(() => {
         if(activeCat) setData({activeCat, categories, activeSubcat})
@@ -24,10 +31,10 @@ const Header = () => {
                         <ul>
                             {
                                 _.isEmpty(data) === false && data.categories.map(({ catName, _id }, i) => (
-                                    <MenuLink key={_id}>
-                                        <Link to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
+                                    <MenuLink key={_id} onClick={(e) => getCategories(e, catName)}>
+                                        <a href="#" to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
                                             {catName}
-                                        </Link>
+                                        </a>
                                     </MenuLink>
                                 ))
                             }
