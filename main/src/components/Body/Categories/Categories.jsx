@@ -46,7 +46,7 @@ const Categories = () => {
 
             let updatedData = data[i]
 
-            let filteredDatas = data.filter(dat => dat._id != data[i]._id)
+            let filteredDatas = data.filter(dat => dat._id !== data[i]._id)
 
 
             filteredDatas.splice(i, 0, updatedData)
@@ -59,7 +59,7 @@ const Categories = () => {
 
                 dispatch(filterSubcategories(filtered))
             }else if(check === false){
-                let updatedFilters = filtered.filter(fil => fil != data[i].subCatName)
+                let updatedFilters = filtered.filter(fil => fil !== data[i].subCatName)
 
                 if(updatedFilters.includes('All')){
                     if(updatedFilters.length === 1){

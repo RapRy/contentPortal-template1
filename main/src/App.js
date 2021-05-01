@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Header from './components/Header/Header';
 import Body from './components/Body/Body'
-import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { fetchCategories } from './actions/categories'
 
@@ -11,7 +10,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchCategories("Games"))
-  }, [])
+  }, [dispatch])
 
   return (
     <>

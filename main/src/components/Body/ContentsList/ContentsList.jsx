@@ -1,71 +1,52 @@
 import {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import { Route } from 'react-router-dom'
+
+import { useSelector, useDispatch } from 'react-redux'
 
 import Content from './Content'
 import Preview from './Preview'
 
-const ContentsList = ({contents, filtered, current}) => {
-    const [data, setData] = useState([]);
-    const [selected, setSelected] = useState([]);
+const ContentsList = () => {
+    const filters = useSelector(state => state.filterReducer)
+    const { contents } = useSelector(state => state.dataReducer)
 
-    const ContentListContainer = styled.div`
-        display:grid;
-        grid-template-columns:repeat(4, 1fr);
-        grid-gap:15px;
-        max-width:900px;
-        margin:0 auto;
-        padding:0 20px 20px;
-    `
+    const [data, setData] = useState([])
 
-    useEffect(() => {        
+    useEffect(() => {  
 
-        setData(contents)
-        setSelected([]);
+        if(filters.length > 0){
+            let newData = []
 
-        if(contents.length > 0){
-            
-            if(filtered.length != 0){
-                if(current.isShow === false){
-                    let filteredData = current.subCatId != null ? data.filter((dat, i) => dat.subCatId != current.subCatId) : [];
+            contents.forEach((cont) => {
+                if(!filters.includes(cont.subCatName))
+                    newData.push(cont)
+            })
 
-                    setData(filteredData)
-                }else if(current.isShow === true){
-                    if(current.subCatId === null){
-                        setData(contents)
-                    }else{
-                        let filteredData = contents.filter((cont) => cont.subCatId == current.subCatId)
-
-                        setData([...data, ...filteredData])
-                    }
-                }
-            }else{
-                if(current.isShow === true){
-                    if(current.subCatId === null){
-                        setData(contents)
-                    }else{
-                        let filteredData = contents.filter((cont) => cont.subCatId == current.subCatId)
-
-                        setData([...data, ...filteredData])
-                    }
-                }
-            }
+            setData(newData)
+        }else{
+            setData(contents)
         }
-    }, [contents])
+
+    }, [filters, contents])
 
     return (
         <>
-            {
-                selected.length > 0 &&
-                    <Route path={`/${data[0].category === "Games-apk" ? "APK" : "HTML"}/:subCat/:contentId`}>
-                        <Preview data={selected} category={data[0].category} setSelected={setSelected} />
-                    </Route>
-            }
             <ContentListContainer>
-                {data.map((cont) => <Content key={cont.id} data={cont} setSelected={setSelected} current={current} />)}
+                {
+                    data != undefined && data.map((cont) => <Content key={cont._id} data={cont} />)
+                }
             </ContentListContainer>
         </>
     )
 }
+
+const ContentListContainer = styled.div`
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-gap:15px;
+    max-width:900px;
+    margin:0 auto;
+    padding:0 20px 20px;
+`
 
 export default ContentsList

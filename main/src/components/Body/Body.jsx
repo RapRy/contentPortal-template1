@@ -8,7 +8,7 @@ const Body = () => {
     return (
         <div>
             <Categories />
-            {/* <ContentsList contents={contents} filtered={filtered} current={current} /> */}
+            <ContentsList />
         </div>
     )
 }
