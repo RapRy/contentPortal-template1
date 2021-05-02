@@ -52,6 +52,9 @@ const Categories = () => {
             filteredDatas.splice(i, 0, updatedData)
 
             if(check === true){
+                // uncheck all if a subcat isCheck value turns false
+                data[0].isChecked = false
+
                 filtered.push(data[i].subCatName)
 
                 // filter duplicate
@@ -60,6 +63,11 @@ const Categories = () => {
                 dispatch(filterSubcategories(filtered))
             }else if(check === false){
                 let updatedFilters = filtered.filter(fil => fil !== data[i].subCatName)
+
+                // check all if all subcats are checked
+                if(filters.length === 1){
+                    data[0].isChecked = true
+                }
 
                 if(updatedFilters.includes('All')){
                     if(updatedFilters.length === 1){
