@@ -5,9 +5,7 @@ const dataReducer = (data = [], action) => {
         case "FETCH_CATEGORY":
             const { activeCat, activeSubcat, categories, contents } = action.payload
             const shuffledContent =  _.shuffle(contents)
-            return { activeCat, activeSubcat, categories, contents:shuffledContent }
-        case "FETCH_CONTENTS":
-            return action.payload
+            return { activeCat, activeSubcat, categories, contents:shuffledContent, preview: {} }
         default:
             return data
     }

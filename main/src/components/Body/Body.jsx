@@ -1,7 +1,6 @@
-import {useEffect, useState} from 'react'
-
 import Categories from './Categories/Categories'
 import ContentsList from './ContentsList/ContentsList'
+
 
 const Body = () => {
 

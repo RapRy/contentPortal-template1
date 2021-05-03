@@ -1,19 +1,25 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
-import { useTransition, animated } from 'react-spring'
+// import { useTransition, animated } from 'react-spring'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { fetchContentDetails } from '../../../actions/content'
+
+
 
 const Content = ({ data }) => {
-
-    const { name, thumbnail } = data
-
+    const dispatch = useDispatch()
+    const { name, thumbnail, _id } = data
+    
     return (
             <ContentWrap>
-                <ImgThumb src={thumbnail} alt={name} />
+                <ImgThumb src={thumbnail} alt={name} onClick={() => dispatch(fetchContentDetails(_id))} />
                 <Title>{name}</Title>
             </ContentWrap>
     )
 }
 
-const ContentWrap = styled(animated.div)`
+const ContentWrap = styled.div`
     text-align:center;
 `
 

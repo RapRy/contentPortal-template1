@@ -1,18 +1,26 @@
 import {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
-import { useSelector, useDispatch } from 'react-redux'
-
-import Content from './Content'
 import Preview from './Preview'
 
+import { useSelector } from 'react-redux'
+
+import _ from 'lodash'
+
+
+import Content from './Content'
+
 const ContentsList = () => {
+
     const filters = useSelector(state => state.filterReducer)
     const { contents } = useSelector(state => state.dataReducer)
+    const details = useSelector(state => state.contentReducer)
 
     const [data, setData] = useState([])
 
-    useEffect(() => {  
+    useEffect(() => { 
+        
+        console.log(_.isEmpty(details))
 
         if(filters.length > 0){
             let newData = []
@@ -27,10 +35,13 @@ const ContentsList = () => {
             setData(contents)
         }
 
-    }, [filters, contents])
+    }, [filters, contents, details])
 
     return (
         <>
+            {
+                _.isEmpty(details) === false && <Preview data={details} />
+            }
             <ContentListContainer>
                 {
                     data != undefined && data.map((cont) => <Content key={cont._id} data={cont} />)
