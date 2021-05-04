@@ -77,9 +77,9 @@ const Header = () => {
                     </MenuBurger>
                 </div>
                 {
-                    sidenavTransition.map((style, item, key) =>
+                    sidenavTransition((style, item) =>
                         item &&
-                            <SideNavWrapper style={style} key={key}>
+                            <SideNavWrapper style={style}>
                                 <div className="mobileMenu">
                                     <ul>
                                     {
