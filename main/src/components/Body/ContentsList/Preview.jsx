@@ -5,8 +5,13 @@ import { useDispatch } from 'react-redux'
 
 import { removeDetails } from '../../../actions/content'
 
-const Preview = ({ data }) => {
+const Preview = ({ data, setShowPrev }) => {
     const dispatch = useDispatch()
+
+    const clickEvt = () => {
+        setShowPrev(false)
+        dispatch(removeDetails())
+    }
 
     return (
         <div>
@@ -16,7 +21,7 @@ const Preview = ({ data }) => {
                         <Thumbnail src={data.thumbnail}/>
                     </div>
                     <div>
-                        <CloseBtn onClick={() => dispatch(removeDetails())}><FontAwesomeIcon icon={faTimes} size="2x" className="closeIcon"/></CloseBtn>
+                        <CloseBtn onClick={clickEvt}><FontAwesomeIcon icon={faTimes} size="2x" className="closeIcon"/></CloseBtn>
                         <p>{data.name}</p>
                         <DownloadLink>
                             <FontAwesomeIcon icon={faFileDownload} size="1x" className="dlIcon" />
@@ -34,7 +39,8 @@ const Preview = ({ data }) => {
 
 const PreviewCont = styled.div`
     padding:0 20px;
-    margin-bottom:30px;
+    max-width:900px;
+    margin:0 auto 30px;
 `
 
 const UpperWrap = styled.div`
@@ -58,8 +64,8 @@ const UpperWrap = styled.div`
 
 const Thumbnail = styled.img`
     border-radius:10px;
-    width:70%;
-    height:70%;
+    width:100%;
+    height:100%;
     cursor:pointer;
 `
 

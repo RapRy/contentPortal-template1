@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react'
+import { useTransition, animated } from 'react-spring'
 import styled from 'styled-components'
 
 import Preview from './Preview'
@@ -17,6 +18,19 @@ const ContentsList = () => {
     const details = useSelector(state => state.contentReducer)
 
     const [data, setData] = useState([])
+    const [showPrev, setShowPrev] = useState(false)
+
+    const detailsTransition = useTransition(showPrev, {
+        from: { opacity:0 },
+        enter: { opacity:1 },
+        leave: { opacity:0 }
+    })
+
+    const transitions = useTransition(data, {
+        from: { opacity:0 },
+        enter: { opacity:1 },
+        leave: { opacity:0 }
+    })
 
     useEffect(() => { 
 
@@ -38,12 +52,19 @@ const ContentsList = () => {
     return (
         <>
             {
-                _.isEmpty(details) === false && <Preview data={details} />
+                _.isEmpty(details) === false && detailsTransition((style, item) => item && <animated.div style={style}><Preview data={details} setShowPrev={setShowPrev} /></animated.div>)
             }
             <ContentListContainer>
                 {
-                    data != undefined && data.map((cont) => <Content key={cont._id} data={cont} />)
+                    data != undefined && transitions((style, item) => (
+                        <animated.div style={style}>
+                            <Content key={item._id} data={item} setShowPrev={setShowPrev} />
+                        </animated.div>
+                    ))
                 }
+                {/* {
+                    data != undefined && data.map((cont) => <Content key={cont._id} data={cont} />)
+                } */}
             </ContentListContainer>
         </>
     )

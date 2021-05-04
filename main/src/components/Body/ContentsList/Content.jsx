@@ -1,19 +1,23 @@
-import { useEffect } from 'react'
 import styled from 'styled-components'
 // import { useTransition, animated } from 'react-spring'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { fetchContentDetails } from '../../../actions/content'
 
 
 
-const Content = ({ data }) => {
+const Content = ({ data, setShowPrev }) => {
     const dispatch = useDispatch()
     const { name, thumbnail, _id } = data
+
+    const clickEvt= (id) => {
+        dispatch(fetchContentDetails(id))
+        setShowPrev(true)
+    }
     
     return (
             <ContentWrap>
-                <ImgThumb src={thumbnail} alt={name} onClick={() => dispatch(fetchContentDetails(_id))} />
+                <ImgThumb src={thumbnail} alt={name} onClick={() => clickEvt(_id)} />
                 <Title>{name}</Title>
             </ContentWrap>
     )

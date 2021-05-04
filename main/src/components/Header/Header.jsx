@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 
 import styled from 'styled-components'
@@ -16,9 +17,9 @@ const Header = () => {
     const dispatch = useDispatch()
 
     const sidenavTransition = useTransition(showSidenav, {
-        from:{right:"-999px"},
+        from:{right:"-300px"},
         enter:{right:"0px"},
-        leave:{right:"-999px"}
+        leave:{right:"-300px"}
     })
 
     const menuBurgerTop = useSpring({
@@ -43,6 +44,9 @@ const Header = () => {
     })
 
     const getCategories = (e, category) => {
+        if(showSidenav === true)
+            setShowSidenav(!showSidenav)
+
         e.preventDefault()
         dispatch(fetchCategories(category))
         dispatch(removeDetails([]))
@@ -55,16 +59,16 @@ const Header = () => {
     return (
         <HeaderStyle>
             <HeaderWrapper>
-                <h3>Gamezone</h3>
+                <h3>PORTAL 1</h3>
                 <div className="menuWrapper">
                     <DesktopMenu showSidenav={showSidenav}>
                         <ul>
                             {
                                 _.isEmpty(data) === false && data.categories.map(({ catName, _id }, i) => (
                                     <MenuLink key={_id} onClick={(e) => getCategories(e, catName)}>
-                                        <a href="#" to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
+                                        <Link to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
                                             {catName}
-                                        </a>
+                                        </Link>
                                     </MenuLink>
                                 ))
                             }
@@ -85,9 +89,9 @@ const Header = () => {
                                     {
                                         _.isEmpty(data) === false && data.categories.map(({ catName, _id }, i) => (
                                             <MenuLinkSub key={_id} onClick={(e) => getCategories(e, catName)}>
-                                                <a href="#" to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
+                                                <Link to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
                                                     {catName}
-                                                </a>
+                                                </Link>
                                             </MenuLinkSub>
                                         ))
                                     }
@@ -130,7 +134,7 @@ const HeaderWrapper = styled.div`
 const DesktopMenu = styled.div`
     display:none;
     
-    @media all and (min-width:450px){
+    @media all and (min-width:501px){
         display:${({showSidenav}) => showSidenav === true ? "none" : "block"}   
     }
 `
@@ -165,7 +169,7 @@ const MenuBurger = styled.div`
     z-index:4;
     cursor:pointer;
 
-    @media all and (min-width:450px){
+    @media all and (min-width:501px){
         display:${({showSidenav}) => showSidenav === true ? "block" : "none"};
     }
 
