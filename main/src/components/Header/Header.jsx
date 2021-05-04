@@ -4,18 +4,48 @@ import _ from 'lodash'
 
 import styled from 'styled-components'
 // import SideNav from './SideNav'
-// import { useTransition, useSpring, animated } from 'react-spring'
+import { useTransition, useSpring, animated } from 'react-spring'
 import { fetchCategories } from '../../actions/categories'
+import { removeDetails } from '../../actions/content'
 
 
 const Header = () => {
     const [data, setData] = useState({})
+    const [showSidenav, setShowSidenav] = useState(false)
     const { activeCat, categories, activeSubcat } = useSelector(state => state.dataReducer)
     const dispatch = useDispatch()
+
+    const sidenavTransition = useTransition(showSidenav, {
+        from:{right:"-999px"},
+        enter:{right:"0px"},
+        leave:{right:"-999px"}
+    })
+
+    const menuBurgerTop = useSpring({
+        to:{top:showSidenav ? "17px" : "5px", transform: showSidenav ? "rotate(45deg)" : "rotate(0deg)"},
+        from:{top:"5px", transform:"rotate(0deg)"},
+    })
+
+    const menuBurgerBottom = useSpring({
+        to:{top:showSidenav ? "-8px" : "5px", transform: showSidenav ? "rotate(-45deg)" : "rotate(0deg)"},
+        from:{top:"5px", transform:"rotate(0deg)"},
+    })
+
+    const menuBurgerTransitionMiddle = useSpring({
+        to:{
+            right:showSidenav ? "-20px" : "0px",
+            opacity:showSidenav ? 0 : 1
+        },
+        from:{
+            right:"0px",
+            opacity:1
+        }
+    })
 
     const getCategories = (e, category) => {
         e.preventDefault()
         dispatch(fetchCategories(category))
+        dispatch(removeDetails([]))
     }
 
     useEffect(() => {
@@ -27,7 +57,7 @@ const Header = () => {
             <HeaderWrapper>
                 <h3>Gamezone</h3>
                 <div className="menuWrapper">
-                    <DesktopMenu>
+                    <DesktopMenu showSidenav={showSidenav}>
                         <ul>
                             {
                                 _.isEmpty(data) === false && data.categories.map(({ catName, _id }, i) => (
@@ -40,7 +70,32 @@ const Header = () => {
                             }
                         </ul>
                     </DesktopMenu>
+                    <MenuBurger onClick={() => setShowSidenav(!showSidenav)} showSidenav={showSidenav}>
+                        <animated.span style={menuBurgerTop}></animated.span>
+                        <animated.span style={menuBurgerTransitionMiddle}></animated.span>
+                        <animated.span style={menuBurgerBottom}></animated.span>
+                    </MenuBurger>
                 </div>
+                {
+                    sidenavTransition.map((style, item, key) =>
+                        item &&
+                            <SideNavWrapper style={style} key={key}>
+                                <div className="mobileMenu">
+                                    <ul>
+                                    {
+                                        _.isEmpty(data) === false && data.categories.map(({ catName, _id }, i) => (
+                                            <MenuLinkSub key={_id} onClick={(e) => getCategories(e, catName)}>
+                                                <a href="#" to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
+                                                    {catName}
+                                                </a>
+                                            </MenuLinkSub>
+                                        ))
+                                    }
+                                    </ul>
+                                </div>
+                            </SideNavWrapper>
+                    )
+                }
             </HeaderWrapper>
         </HeaderStyle>
     )
@@ -73,7 +128,11 @@ const HeaderWrapper = styled.div`
 `
 // original display none
 const DesktopMenu = styled.div`
-    display:block; 
+    display:none;
+    
+    @media all and (min-width:450px){
+        display:${({showSidenav}) => showSidenav === true ? "none" : "block"}   
+    }
 `
 
 const MenuLink = styled.li`
@@ -106,6 +165,9 @@ const MenuBurger = styled.div`
     z-index:4;
     cursor:pointer;
 
+    @media all and (min-width:450px){
+        display:${({showSidenav}) => showSidenav === true ? "block" : "none"};
+    }
 
     span{
         display:block;
@@ -121,7 +183,7 @@ const MenuBurger = styled.div`
     }
 `
 
-const SideNavWrapper = styled.div`
+const SideNavWrapper = styled(animated.div)`
     position:absolute;
     width:200px;
     height:100%;

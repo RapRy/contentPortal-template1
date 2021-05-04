@@ -19,8 +19,6 @@ const ContentsList = () => {
     const [data, setData] = useState([])
 
     useEffect(() => { 
-        
-        console.log(_.isEmpty(details))
 
         if(filters.length > 0){
             let newData = []
