@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import _ from 'lodash'
 
 import styled from 'styled-components'
@@ -66,9 +65,9 @@ const Header = () => {
                             {
                                 _.isEmpty(data) === false && data.categories.map(({ catName, _id }, i) => (
                                     <MenuLink key={_id} onClick={(e) => getCategories(e, catName)}>
-                                        <Link to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
+                                        <a href="#" className={activeCat._id === _id ? "activeCat" : ""}>
                                             {catName}
-                                        </Link>
+                                        </a>
                                     </MenuLink>
                                 ))
                             }
@@ -89,9 +88,9 @@ const Header = () => {
                                     {
                                         _.isEmpty(data) === false && data.categories.map(({ catName, _id }, i) => (
                                             <MenuLinkSub key={_id} onClick={(e) => getCategories(e, catName)}>
-                                                <Link to={`/${catName}`} className={activeCat._id === _id ? "activeCat" : ""}>
+                                                <a href="#" className={activeCat._id === _id ? "activeCat" : ""}>
                                                     {catName}
-                                                </Link>
+                                                </a>
                                             </MenuLinkSub>
                                         ))
                                     }
