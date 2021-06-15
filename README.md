@@ -2,7 +2,7 @@
 
 # Content Portal Template1
 
-> This is the first portal that I developed for the company that I'm currently employed, I built this portal using reactjs but originally it is built using html, css and vanilla js.
+> I built this portal using reactjs but originally it is built using html, css and vanilla js.
 
 **Demo Link: [Portal 1](https://portal-template-1.netlify.app/)**
 
