@@ -8,7 +8,7 @@
 
 **Demo Link: [Portal 1](https://portal-template-1.netlify.app/)**
 
-### Tech's used
+#### Tech's used
 - [React Js](https://reactjs.org/)
 - [React Spring](https://react-spring.io/)
 - [React Redux](https://react-redux.js.org/)
